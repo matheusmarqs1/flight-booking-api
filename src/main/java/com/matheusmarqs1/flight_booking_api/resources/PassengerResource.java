@@ -1,24 +1,33 @@
 package com.matheusmarqs1.flight_booking_api.resources;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.matheusmarqs1.flight_booking_api.entities.Passenger;
+import com.matheusmarqs1.flight_booking_api.services.PassengerService;
 
 @RestController
 @RequestMapping(value = "/passengers")
 public class PassengerResource {
-	 
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
+	@Autowired
+	private PassengerService passengerService;
 	
 	@GetMapping
-	public ResponseEntity<Passenger> findAll(){
-		Passenger passenger = new Passenger(1L, "Alex Pereira", "alex@example.com", "12345678909", LocalDate.parse("10/05/1974", FORMATTER), "999999999");
+	public ResponseEntity<List<Passenger>> findAll(){
+		List<Passenger> list = passengerService.findAll();
+		return ResponseEntity.ok().body(list);
+	}
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<Passenger> findById(@PathVariable Long id){
+		Passenger passenger = passengerService.findById(id);
 		return ResponseEntity.ok().body(passenger);
 	}
 }
