@@ -2,12 +2,15 @@ package com.matheusmarqs1.flight_booking_api.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,6 +26,9 @@ public class Passenger implements Serializable {
 	private String cpf;
 	private LocalDate birthDate;
 	private String phone;
+	
+	@OneToMany(mappedBy = "passenger")
+	private List<Reservation> reservations = new ArrayList<>();
 	
 	public Passenger() {
 	}
@@ -84,6 +90,10 @@ public class Passenger implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
 
 	@Override
 	public int hashCode() {
@@ -101,7 +111,5 @@ public class Passenger implements Serializable {
 		Passenger other = (Passenger) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }
