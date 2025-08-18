@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +29,7 @@ public class Passenger implements Serializable {
 	private LocalDate birthDate;
 	private String phone;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "passenger")
 	private List<Reservation> reservations = new ArrayList<>();
 	
