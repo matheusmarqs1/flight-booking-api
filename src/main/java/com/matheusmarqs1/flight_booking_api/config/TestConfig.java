@@ -10,11 +10,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.matheusmarqs1.flight_booking_api.entities.Flight;
 import com.matheusmarqs1.flight_booking_api.entities.Passenger;
 import com.matheusmarqs1.flight_booking_api.entities.Reservation;
 import com.matheusmarqs1.flight_booking_api.entities.Ticket;
+import com.matheusmarqs1.flight_booking_api.entities.enums.FlightStatus;
 import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
 import com.matheusmarqs1.flight_booking_api.entities.enums.TicketStatus;
+import com.matheusmarqs1.flight_booking_api.repositories.FlightRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.PassengerRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.ReservationRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.TicketRepository;
@@ -32,6 +35,9 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private TicketRepository ticketRepository;
 	
+	@Autowired
+	private FlightRepository flightRepository;
+	
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
 	@Override
@@ -42,6 +48,11 @@ public class TestConfig implements CommandLineRunner {
 		Passenger p3 = new Passenger(null, "Maria Souza", "mariass@example.com", "12345678907", LocalDate.parse("15/03/1995", FORMATTER), "999999999");
 		passengerRepository.saveAll(Arrays.asList(p1, p2, p3));
 		
+		Flight f1 = new Flight(null, "UA123", Instant.parse("2025-08-25T10:00:00Z"), Instant.parse("2025-08-25T13:30:00Z"), FlightStatus.SCHEDULED);
+        Flight f2 = new Flight(null, "DL456", Instant.parse("2025-08-26T15:00:00Z"), Instant.parse("2025-08-26T18:45:00Z"), FlightStatus.DELAYED);
+        Flight f3 = new Flight(null, "AA789", Instant.parse("2025-08-27T08:00:00Z"), Instant.parse("2025-08-27T11:20:00Z"), FlightStatus.DEPARTED);
+        flightRepository.saveAll(Arrays.asList(f1, f2, f3));
+        
 		Reservation r1 = new Reservation(null, "PNR0001", Instant.parse("2025-07-11T19:53:07Z"), ReservationStatus.CONFIRMED, p1);
 		Reservation r2 = new Reservation(null, "PNR0002", Instant.parse("2025-08-18T11:30:00Z"), ReservationStatus.WAITING_PAYMENT, p2);
 		Reservation r3 = new Reservation(null, "PNR0003", Instant.parse("2025-08-18T10:00:00Z"), ReservationStatus.CONFIRMED, p1);
