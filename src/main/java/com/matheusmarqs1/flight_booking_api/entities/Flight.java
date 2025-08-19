@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,16 +27,21 @@ public class Flight implements Serializable {
 	private Instant arrivalTime;
 	private Integer flightStatus;
 	
+	@ManyToOne
+	@JoinColumn(name = "airline_id")
+	private Airline airline;
+	
 	public Flight() {
 	}
 
-	public Flight(Long id, String flightNumber, Instant departureTime, Instant arrivalTime, FlightStatus flightStatus) {
+	public Flight(Long id, String flightNumber, Instant departureTime, Instant arrivalTime, FlightStatus flightStatus, Airline airline) {
 		super();
 		this.id = id;
 		this.flightNumber = flightNumber;
 		this.departureTime = departureTime;
 		this.arrivalTime = arrivalTime;
 		setFlightStatus(flightStatus);
+		this.airline = airline;
 	}
 
 	public Long getId() {
@@ -78,6 +85,14 @@ public class Flight implements Serializable {
 			this.flightStatus = flightStatus.getCode();
 		}
 	}
+	
+	public Airline getAirline() {
+		return airline;
+	}
+
+	public void setAirline(Airline airline) {
+		this.airline = airline;
+	}
 
 	@Override
 	public int hashCode() {
@@ -94,6 +109,5 @@ public class Flight implements Serializable {
 			return false;
 		Flight other = (Flight) obj;
 		return Objects.equals(id, other.id);
-	}
-	
+	}	
 }
