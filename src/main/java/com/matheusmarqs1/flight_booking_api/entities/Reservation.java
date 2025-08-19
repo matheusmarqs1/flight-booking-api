@@ -2,8 +2,11 @@ package com.matheusmarqs1.flight_booking_api.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
 
 import jakarta.persistence.Entity;
@@ -12,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,18 +33,22 @@ public class Reservation implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "passenger_id")
-	private Passenger passenger;
+	private Passenger bookingHolder;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "reservation")
+	private List<Ticket> tickets = new ArrayList<>();
 	
 	public Reservation() {
 	}
 
-	public Reservation(Long id, String reservationNumber, Instant bookingTime, ReservationStatus reservationStatus, Passenger passenger) {
+	public Reservation(Long id, String reservationNumber, Instant bookingTime, ReservationStatus reservationStatus, Passenger bookingHolder) {
 		super();
 		this.id = id;
 		this.reservationNumber = reservationNumber;
 		this.bookingTime = bookingTime;
 		setReservationStatus(reservationStatus);
-		this.passenger = passenger;
+		this.bookingHolder = bookingHolder;
 	}
 
 	public Long getId() {
@@ -77,12 +85,16 @@ public class Reservation implements Serializable {
 		}
 	}
 
-	public Passenger getPassenger() {
-		return passenger;
+	public Passenger getBookingHolder() {
+		return bookingHolder;
 	}
 
-	public void setPassenger(Passenger passenger) {
-		this.passenger = passenger;
+	public void setBookingHolder(Passenger bookingHolder) {
+		this.bookingHolder = bookingHolder;
+	}
+	
+	public List<Ticket> getTickets() {
+		return tickets;
 	}
 
 	@Override
@@ -100,5 +112,6 @@ public class Reservation implements Serializable {
 			return false;
 		Reservation other = (Reservation) obj;
 		return Objects.equals(id, other.id);
-	}	
+	}
+
 }

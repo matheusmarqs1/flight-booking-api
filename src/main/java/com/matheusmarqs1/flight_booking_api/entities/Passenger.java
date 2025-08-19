@@ -30,8 +30,12 @@ public class Passenger implements Serializable {
 	private String phone;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "passenger")
+	@OneToMany(mappedBy = "bookingHolder")
 	private List<Reservation> reservations = new ArrayList<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "passenger")
+	private List<Ticket> tickets = new ArrayList<>();
 	
 	public Passenger() {
 	}
@@ -97,6 +101,10 @@ public class Passenger implements Serializable {
 	public List<Reservation> getReservations() {
 		return reservations;
 	}
+	
+	public List<Ticket> getTickets() {
+		return tickets;
+	}
 
 	@Override
 	public int hashCode() {
@@ -114,5 +122,4 @@ public class Passenger implements Serializable {
 		Passenger other = (Passenger) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }

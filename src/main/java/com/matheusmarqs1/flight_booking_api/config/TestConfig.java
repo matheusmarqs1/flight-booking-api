@@ -12,9 +12,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.matheusmarqs1.flight_booking_api.entities.Passenger;
 import com.matheusmarqs1.flight_booking_api.entities.Reservation;
+import com.matheusmarqs1.flight_booking_api.entities.Ticket;
 import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
+import com.matheusmarqs1.flight_booking_api.entities.enums.TicketStatus;
 import com.matheusmarqs1.flight_booking_api.repositories.PassengerRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.ReservationRepository;
+import com.matheusmarqs1.flight_booking_api.repositories.TicketRepository;
 
 @Configuration
 @Profile("test")
@@ -26,6 +29,9 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private ReservationRepository reservationRepository;
 	
+	@Autowired
+	private TicketRepository ticketRepository;
+	
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
 	@Override
@@ -33,14 +39,23 @@ public class TestConfig implements CommandLineRunner {
 		
 		Passenger p1 = new Passenger(null, "Matheus Teles", "matheust@example.com", "12345678909", LocalDate.parse("10/10/1987", FORMATTER), "988888888");
 		Passenger p2 = new Passenger(null, "Thiago Diogo", "thiagodiogo@example.com", "12345678908", LocalDate.parse("10/04/1986", FORMATTER), "977777777");
-		
-		passengerRepository.saveAll(Arrays.asList(p1, p2));
+		Passenger p3 = new Passenger(null, "Maria Souza", "mariass@example.com", "12345678907", LocalDate.parse("15/03/1995", FORMATTER), "999999999");
+		passengerRepository.saveAll(Arrays.asList(p1, p2, p3));
 		
 		Reservation r1 = new Reservation(null, "PNR0001", Instant.parse("2025-07-11T19:53:07Z"), ReservationStatus.CONFIRMED, p1);
 		Reservation r2 = new Reservation(null, "PNR0002", Instant.parse("2025-08-18T11:30:00Z"), ReservationStatus.WAITING_PAYMENT, p2);
 		Reservation r3 = new Reservation(null, "PNR0003", Instant.parse("2025-08-18T10:00:00Z"), ReservationStatus.CONFIRMED, p1);
 		
 		reservationRepository.saveAll(Arrays.asList(r1, r2, r3));
+		
+		Ticket t1 = new Ticket(null, 500.0, TicketStatus.USED, p1, r1);
+		Ticket t2 = new Ticket(null, 500.0, TicketStatus.USED, p3, r1);
+		Ticket t3 = new Ticket(null, 479.85, TicketStatus.ISSUED, p1, r3);
+		
+		ticketRepository.saveAll(Arrays.asList(t1, t2, t3));
+		
+		
+		
 	}
 	
 	
