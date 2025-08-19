@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.matheusmarqs1.flight_booking_api.entities.Passenger;
 import com.matheusmarqs1.flight_booking_api.entities.Reservation;
+import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
 import com.matheusmarqs1.flight_booking_api.repositories.PassengerRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.ReservationRepository;
 
@@ -35,9 +36,9 @@ public class TestConfig implements CommandLineRunner {
 		
 		passengerRepository.saveAll(Arrays.asList(p1, p2));
 		
-		Reservation r1 = new Reservation(null, "PNR0001", Instant.parse("2025-07-11T19:53:07Z"), p1);
-		Reservation r2 = new Reservation(null, "PNR0002", Instant.parse("2025-08-18T11:30:00Z"), p2);
-		Reservation r3 = new Reservation(null, "PNR0003", Instant.parse("2025-08-18T10:00:00Z"), p1);
+		Reservation r1 = new Reservation(null, "PNR0001", Instant.parse("2025-07-11T19:53:07Z"), ReservationStatus.CONFIRMED, p1);
+		Reservation r2 = new Reservation(null, "PNR0002", Instant.parse("2025-08-18T11:30:00Z"), ReservationStatus.WAITING_PAYMENT, p2);
+		Reservation r3 = new Reservation(null, "PNR0003", Instant.parse("2025-08-18T10:00:00Z"), ReservationStatus.CONFIRMED, p1);
 		
 		reservationRepository.saveAll(Arrays.asList(r1, r2, r3));
 	}

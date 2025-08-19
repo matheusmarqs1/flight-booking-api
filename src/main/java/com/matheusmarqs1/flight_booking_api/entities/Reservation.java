@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +25,8 @@ public class Reservation implements Serializable {
 	private String reservationNumber;
 	private Instant bookingTime;
 	
+	private Integer reservationStatus;
+	
 	@ManyToOne
 	@JoinColumn(name = "passenger_id")
 	private Passenger passenger;
@@ -30,11 +34,12 @@ public class Reservation implements Serializable {
 	public Reservation() {
 	}
 
-	public Reservation(Long id, String reservationNumber, Instant bookingTime, Passenger passenger) {
+	public Reservation(Long id, String reservationNumber, Instant bookingTime, ReservationStatus reservationStatus, Passenger passenger) {
 		super();
 		this.id = id;
 		this.reservationNumber = reservationNumber;
 		this.bookingTime = bookingTime;
+		setReservationStatus(reservationStatus);
 		this.passenger = passenger;
 	}
 
@@ -61,6 +66,16 @@ public class Reservation implements Serializable {
 	public void setBookingTime(Instant bookingTime) {
 		this.bookingTime = bookingTime;
 	}
+	
+	public ReservationStatus getReservationStatus() {
+		return ReservationStatus.valueOf(reservationStatus);
+	}
+
+	public void setReservationStatus(ReservationStatus reservationStatus) {
+		if(reservationStatus != null) {
+			this.reservationStatus = reservationStatus.getCode();
+		}
+	}
 
 	public Passenger getPassenger() {
 		return passenger;
@@ -85,7 +100,5 @@ public class Reservation implements Serializable {
 			return false;
 		Reservation other = (Reservation) obj;
 		return Objects.equals(id, other.id);
-	}
-	
-	
+	}	
 }
