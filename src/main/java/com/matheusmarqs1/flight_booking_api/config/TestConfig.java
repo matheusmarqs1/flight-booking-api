@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.matheusmarqs1.flight_booking_api.entities.Airline;
+import com.matheusmarqs1.flight_booking_api.entities.Airport;
 import com.matheusmarqs1.flight_booking_api.entities.Flight;
 import com.matheusmarqs1.flight_booking_api.entities.Passenger;
 import com.matheusmarqs1.flight_booking_api.entities.Reservation;
@@ -19,6 +20,7 @@ import com.matheusmarqs1.flight_booking_api.entities.enums.FlightStatus;
 import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
 import com.matheusmarqs1.flight_booking_api.entities.enums.TicketStatus;
 import com.matheusmarqs1.flight_booking_api.repositories.AirlineRepository;
+import com.matheusmarqs1.flight_booking_api.repositories.AirportRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.FlightRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.PassengerRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.ReservationRepository;
@@ -43,6 +45,9 @@ public class TestConfig implements CommandLineRunner {
 	@Autowired
 	private AirlineRepository airlineRepository;
 	
+	@Autowired
+	private AirportRepository airportRepository;
+	
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
 	@Override
@@ -57,11 +62,15 @@ public class TestConfig implements CommandLineRunner {
         Airline a2 = new Airline(null, "GOL Linhas Aéreas", "G3");
         Airline a3 = new Airline(null, "Azul Linhas Aéreas", "AD");
         airlineRepository.saveAll(Arrays.asList(a1, a2, a3));
+        
+        Airport ap1 = new Airport(null, "Aeroporto Internacional de Guarulhos", "GRU", "São Paulo", "Brasil");
+		Airport ap2 = new Airport(null, "Aeroporto Internacional de Brasília", "BSB", "Brasília", "Brasil");
+		Airport ap3 = new Airport(null, "Aeroporto Internacional do Galeão", "GIG", "Rio de Janeiro", "Brasil");
+		airportRepository.saveAll(Arrays.asList(ap1, ap2, ap3));
 		
-		
-		Flight f1 = new Flight(null, "LA3302", Instant.parse("2025-08-25T10:00:00Z"), Instant.parse("2025-08-25T13:30:00Z"), FlightStatus.SCHEDULED, a1);
-        Flight f2 = new Flight(null, "G31575", Instant.parse("2025-08-26T15:00:00Z"), Instant.parse("2025-08-26T18:45:00Z"), FlightStatus.SCHEDULED, a2);
-        Flight f3 = new Flight(null, "AD4001", Instant.parse("2025-08-27T08:00:00Z"), Instant.parse("2025-08-27T11:20:00Z"), FlightStatus.SCHEDULED, a3);
+		Flight f1 = new Flight(null, "LA3302", Instant.parse("2025-08-25T10:00:00Z"), Instant.parse("2025-08-25T13:30:00Z"), FlightStatus.SCHEDULED, a1, ap1, ap2);
+        Flight f2 = new Flight(null, "G31575", Instant.parse("2025-08-26T15:00:00Z"), Instant.parse("2025-08-26T18:45:00Z"), FlightStatus.SCHEDULED, a2, ap2, ap3);
+        Flight f3 = new Flight(null, "AD4001", Instant.parse("2025-08-27T08:00:00Z"), Instant.parse("2025-08-27T11:20:00Z"), FlightStatus.SCHEDULED, a3, ap3, ap1);
         flightRepository.saveAll(Arrays.asList(f1, f2, f3));
         
 		Reservation r1 = new Reservation(null, "PNR0001", Instant.parse("2025-07-11T19:53:07Z"), ReservationStatus.CONFIRMED, p1);

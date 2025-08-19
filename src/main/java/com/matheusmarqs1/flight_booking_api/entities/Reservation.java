@@ -2,9 +2,9 @@ package com.matheusmarqs1.flight_booking_api.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
@@ -37,7 +37,7 @@ public class Reservation implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "reservation")
-	private List<Ticket> tickets = new ArrayList<>();
+	private Set<Ticket> tickets = new HashSet<>();
 	
 	public Reservation() {
 	}
@@ -93,7 +93,7 @@ public class Reservation implements Serializable {
 		this.bookingHolder = bookingHolder;
 	}
 	
-	public List<Ticket> getTickets() {
+	public Set<Ticket> getTickets() {
 		return tickets;
 	}
 

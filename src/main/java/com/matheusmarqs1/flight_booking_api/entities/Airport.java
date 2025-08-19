@@ -15,8 +15,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_airline")
-public class Airline implements Serializable {
+@Table(name = "tb_airport")
+public class Airport implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -24,25 +24,33 @@ public class Airline implements Serializable {
 	private Long id;
 	private String name;
 	private String code;
+	private String city;
+	private String country;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "airline")
-	Set<Flight> flights = new HashSet<>();
+	@OneToMany(mappedBy = "departureAirport")
+	Set<Flight> departingFlights = new HashSet<>();
 	
-	public Airline() {
+	@JsonIgnore
+	@OneToMany(mappedBy = "arrivalAirport")
+	Set<Flight> arrivingFlights = new HashSet<>();
+	
+	public Airport() {
 	}
 
-	public Airline(Long id, String name, String code) {
+	public Airport(Long id, String name, String code, String city, String country) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.code = code;
+		this.city = city;
+		this.country = country;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}
-
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -63,8 +71,28 @@ public class Airline implements Serializable {
 		this.code = code;
 	}
 
-	public Set<Flight> getFlights() {
-		return flights;
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public Set<Flight> getDepartingFlights() {
+		return departingFlights;
+	}
+
+	public Set<Flight> getArrivingFlights() {
+		return arrivingFlights;
 	}
 
 	@Override
@@ -80,9 +108,8 @@ public class Airline implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Airline other = (Airline) obj;
+		Airport other = (Airport) obj;
 		return Objects.equals(id, other.id);
 	}
-	
 	
 }

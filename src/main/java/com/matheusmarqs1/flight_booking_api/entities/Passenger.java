@@ -3,8 +3,10 @@ package com.matheusmarqs1.flight_booking_api.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,7 +37,7 @@ public class Passenger implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "passenger")
-	private List<Ticket> tickets = new ArrayList<>();
+	private Set<Ticket> tickets = new HashSet<>();
 	
 	public Passenger() {
 	}
@@ -102,7 +104,7 @@ public class Passenger implements Serializable {
 		return reservations;
 	}
 	
-	public List<Ticket> getTickets() {
+	public Set<Ticket> getTickets() {
 		return tickets;
 	}
 

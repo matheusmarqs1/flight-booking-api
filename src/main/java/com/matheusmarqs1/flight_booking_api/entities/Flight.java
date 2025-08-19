@@ -31,10 +31,18 @@ public class Flight implements Serializable {
 	@JoinColumn(name = "airline_id")
 	private Airline airline;
 	
+	@ManyToOne
+	@JoinColumn(name = "departure_airport_id")
+	private Airport departureAirport;
+	
+	@ManyToOne
+	@JoinColumn(name = "arrival_airport_id")
+	private Airport arrivalAirport;
+	
 	public Flight() {
 	}
 
-	public Flight(Long id, String flightNumber, Instant departureTime, Instant arrivalTime, FlightStatus flightStatus, Airline airline) {
+	public Flight(Long id, String flightNumber, Instant departureTime, Instant arrivalTime, FlightStatus flightStatus, Airline airline, Airport departureAirport, Airport arrivalAirport) {
 		super();
 		this.id = id;
 		this.flightNumber = flightNumber;
@@ -42,6 +50,8 @@ public class Flight implements Serializable {
 		this.arrivalTime = arrivalTime;
 		setFlightStatus(flightStatus);
 		this.airline = airline;
+		this.setDepartureAirport(departureAirport);
+		this.setArrivalAirport(arrivalAirport);
 	}
 
 	public Long getId() {
@@ -93,6 +103,22 @@ public class Flight implements Serializable {
 	public void setAirline(Airline airline) {
 		this.airline = airline;
 	}
+	
+	public Airport getDepartureAirport() {
+		return departureAirport;
+	}
+
+	public void setDepartureAirport(Airport departureAirport) {
+		this.departureAirport = departureAirport;
+	}
+
+	public Airport getArrivalAirport() {
+		return arrivalAirport;
+	}
+
+	public void setArrivalAirport(Airport arrivalAirport) {
+		this.arrivalAirport = arrivalAirport;
+	}	
 
 	@Override
 	public int hashCode() {
@@ -109,5 +135,6 @@ public class Flight implements Serializable {
 			return false;
 		Flight other = (Flight) obj;
 		return Objects.equals(id, other.id);
-	}	
+	}
+
 }
