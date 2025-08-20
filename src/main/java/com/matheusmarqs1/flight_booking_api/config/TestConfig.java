@@ -14,6 +14,7 @@ import com.matheusmarqs1.flight_booking_api.entities.Airline;
 import com.matheusmarqs1.flight_booking_api.entities.Airport;
 import com.matheusmarqs1.flight_booking_api.entities.Flight;
 import com.matheusmarqs1.flight_booking_api.entities.Passenger;
+import com.matheusmarqs1.flight_booking_api.entities.Payment;
 import com.matheusmarqs1.flight_booking_api.entities.Reservation;
 import com.matheusmarqs1.flight_booking_api.entities.Seat;
 import com.matheusmarqs1.flight_booking_api.entities.Ticket;
@@ -99,6 +100,12 @@ public class TestConfig implements CommandLineRunner {
 		
 		ticketRepository.saveAll(Arrays.asList(t1, t2, t3));
 		
+		Payment pay1 = new Payment(null, Instant.parse("2025-07-11T21:53:07Z") , r1);
+		r1.setPayment(pay1);
+		Payment pay2 = new Payment(null, Instant.parse("2025-08-18T12:00:00Z"), r3);
+		r3.setPayment(pay2);
+		
+		reservationRepository.saveAll(Arrays.asList(r1, r3));
 		
 		
 	}

@@ -9,6 +9,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,6 +40,9 @@ public class Reservation implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "reservation")
 	private Set<Ticket> tickets = new HashSet<>();
+	
+	@OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+	private Payment payment;
 	
 	public Reservation() {
 	}
@@ -96,6 +101,14 @@ public class Reservation implements Serializable {
 	public Set<Ticket> getTickets() {
 		return tickets;
 	}
+	
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
+	}
 
 	@Override
 	public int hashCode() {
@@ -113,5 +126,4 @@ public class Reservation implements Serializable {
 		Reservation other = (Reservation) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }
