@@ -47,6 +47,10 @@ public class Flight implements Serializable {
 	@OneToMany(mappedBy = "flight")
 	private Set<Seat> seats = new HashSet<>();
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "flight")
+	private Set<Ticket> tickets = new HashSet<>();
+	
 	public Flight() {
 	}
 
@@ -130,6 +134,10 @@ public class Flight implements Serializable {
 	
 	public Set<Seat> getSeats() {
 		return seats;
+	}
+	
+	public Set<Ticket> getTickets() {
+		return tickets;
 	}
 
 	@Override

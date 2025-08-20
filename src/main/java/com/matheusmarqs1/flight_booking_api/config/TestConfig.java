@@ -76,7 +76,7 @@ public class TestConfig implements CommandLineRunner {
 		
 		Flight f1 = new Flight(null, "LA3302", Instant.parse("2025-08-25T10:00:00Z"), Instant.parse("2025-08-25T13:30:00Z"), FlightStatus.SCHEDULED, a1, ap1, ap2);
         Flight f2 = new Flight(null, "G31575", Instant.parse("2025-08-26T15:00:00Z"), Instant.parse("2025-08-26T18:45:00Z"), FlightStatus.SCHEDULED, a2, ap2, ap3);
-        Flight f3 = new Flight(null, "AD4001", Instant.parse("2025-08-27T08:00:00Z"), Instant.parse("2025-08-27T11:20:00Z"), FlightStatus.SCHEDULED, a3, ap3, ap1);
+        Flight f3 = new Flight(null, "AD4001", Instant.parse("2025-09-27T08:00:00Z"), Instant.parse("2025-09-27T11:20:00Z"), FlightStatus.SCHEDULED, a3, ap3, ap1);
         flightRepository.saveAll(Arrays.asList(f1, f2, f3));
         
 		Reservation r1 = new Reservation(null, "PNR0001", Instant.parse("2025-07-11T19:53:07Z"), ReservationStatus.CONFIRMED, p1);
@@ -93,9 +93,9 @@ public class TestConfig implements CommandLineRunner {
 		Seat s6 = new Seat(null, "1B", SeatClass.ECONOMY, f3);
 		seatRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6));
 		
-		Ticket t1 = new Ticket(null, 500.0, TicketStatus.USED, p1, r1);
-		Ticket t2 = new Ticket(null, 500.0, TicketStatus.USED, p3, r1);
-		Ticket t3 = new Ticket(null, 479.85, TicketStatus.ISSUED, p1, r3);
+		Ticket t1 = new Ticket(null, 500.0, TicketStatus.ISSUED, p1, r1, f1);
+		Ticket t2 = new Ticket(null, 500.0, TicketStatus.ISSUED, p3, r1, f1);
+		Ticket t3 = new Ticket(null, 479.85, TicketStatus.ISSUED, p1, r3, f3);
 		
 		ticketRepository.saveAll(Arrays.asList(t1, t2, t3));
 		

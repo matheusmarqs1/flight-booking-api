@@ -32,16 +32,21 @@ public class Ticket implements Serializable {
 	@JoinColumn(name = "reservation_id")
 	private Reservation reservation;
 	
+	@ManyToOne
+	@JoinColumn(name = "flight_id")
+	private Flight flight;
+	
 	public Ticket() {
 	}
 
-	public Ticket(Long id, Double price, TicketStatus ticketStatus, Passenger passenger, Reservation reservation) {
+	public Ticket(Long id, Double price, TicketStatus ticketStatus, Passenger passenger, Reservation reservation, Flight flight) {
 		super();
 		this.id = id;
 		this.price = price;
 		setTicketStatus(ticketStatus);
 		this.passenger = passenger;
 		this.reservation = reservation;
+		this.flight = flight;
 	}
 
 	public Long getId() {
@@ -84,6 +89,14 @@ public class Ticket implements Serializable {
 
 	public void setReservation(Reservation reservation) {
 		this.reservation = reservation;
+	}
+	
+	public Flight getFlight() {
+		return flight;
+	}
+
+	public void setFlight(Flight flight) {
+		this.flight = flight;
 	}
 
 	@Override
