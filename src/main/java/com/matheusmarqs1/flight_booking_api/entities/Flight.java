@@ -2,8 +2,11 @@ package com.matheusmarqs1.flight_booking_api.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.matheusmarqs1.flight_booking_api.entities.enums.FlightStatus;
 
 import jakarta.persistence.Entity;
@@ -12,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,6 +42,10 @@ public class Flight implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "arrival_airport_id")
 	private Airport arrivalAirport;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "flight")
+	private Set<Seat> seats = new HashSet<>();
 	
 	public Flight() {
 	}
@@ -118,7 +126,11 @@ public class Flight implements Serializable {
 
 	public void setArrivalAirport(Airport arrivalAirport) {
 		this.arrivalAirport = arrivalAirport;
-	}	
+	}
+	
+	public Set<Seat> getSeats() {
+		return seats;
+	}
 
 	@Override
 	public int hashCode() {
@@ -136,5 +148,4 @@ public class Flight implements Serializable {
 		Flight other = (Flight) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }

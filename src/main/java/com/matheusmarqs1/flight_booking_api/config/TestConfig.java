@@ -15,15 +15,18 @@ import com.matheusmarqs1.flight_booking_api.entities.Airport;
 import com.matheusmarqs1.flight_booking_api.entities.Flight;
 import com.matheusmarqs1.flight_booking_api.entities.Passenger;
 import com.matheusmarqs1.flight_booking_api.entities.Reservation;
+import com.matheusmarqs1.flight_booking_api.entities.Seat;
 import com.matheusmarqs1.flight_booking_api.entities.Ticket;
 import com.matheusmarqs1.flight_booking_api.entities.enums.FlightStatus;
 import com.matheusmarqs1.flight_booking_api.entities.enums.ReservationStatus;
+import com.matheusmarqs1.flight_booking_api.entities.enums.SeatClass;
 import com.matheusmarqs1.flight_booking_api.entities.enums.TicketStatus;
 import com.matheusmarqs1.flight_booking_api.repositories.AirlineRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.AirportRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.FlightRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.PassengerRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.ReservationRepository;
+import com.matheusmarqs1.flight_booking_api.repositories.SeatRepository;
 import com.matheusmarqs1.flight_booking_api.repositories.TicketRepository;
 
 @Configuration
@@ -47,6 +50,9 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private AirportRepository airportRepository;
+	
+	@Autowired
+	private SeatRepository seatRepository;
 	
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
@@ -78,6 +84,14 @@ public class TestConfig implements CommandLineRunner {
 		Reservation r3 = new Reservation(null, "PNR0003", Instant.parse("2025-08-18T10:00:00Z"), ReservationStatus.CONFIRMED, p1);
 		
 		reservationRepository.saveAll(Arrays.asList(r1, r2, r3));
+		
+		Seat s1 = new Seat(null, "1A", SeatClass.ECONOMY, f1);
+		Seat s2 = new Seat(null, "1B", SeatClass.ECONOMY, f1);
+		Seat s3 = new Seat(null, "1A", SeatClass.ECONOMY, f2);
+		Seat s4 = new Seat(null, "1B", SeatClass.ECONOMY, f2);
+		Seat s5 = new Seat(null, "1A", SeatClass.ECONOMY, f3);
+		Seat s6 = new Seat(null, "1B", SeatClass.ECONOMY, f3);
+		seatRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6));
 		
 		Ticket t1 = new Ticket(null, 500.0, TicketStatus.USED, p1, r1);
 		Ticket t2 = new Ticket(null, 500.0, TicketStatus.USED, p3, r1);
