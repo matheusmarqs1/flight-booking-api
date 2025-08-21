@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -36,10 +37,14 @@ public class Ticket implements Serializable {
 	@JoinColumn(name = "flight_id")
 	private Flight flight;
 	
+	@OneToOne
+	@JoinColumn(name = "seat_id")
+	private Seat seat;
+	
 	public Ticket() {
 	}
 
-	public Ticket(Long id, Double price, TicketStatus ticketStatus, Passenger passenger, Reservation reservation, Flight flight) {
+	public Ticket(Long id, Double price, TicketStatus ticketStatus, Passenger passenger, Reservation reservation, Flight flight, Seat seat) {
 		super();
 		this.id = id;
 		this.price = price;
@@ -47,6 +52,7 @@ public class Ticket implements Serializable {
 		this.passenger = passenger;
 		this.reservation = reservation;
 		this.flight = flight;
+		this.seat = seat;
 	}
 
 	public Long getId() {
@@ -98,6 +104,14 @@ public class Ticket implements Serializable {
 	public void setFlight(Flight flight) {
 		this.flight = flight;
 	}
+	
+	public Seat getSeat() {
+		return seat;
+	}
+
+	public void setSeat(Seat seat) {
+		this.seat = seat;
+	}
 
 	@Override
 	public int hashCode() {
@@ -115,6 +129,4 @@ public class Ticket implements Serializable {
 		Ticket other = (Ticket) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 }

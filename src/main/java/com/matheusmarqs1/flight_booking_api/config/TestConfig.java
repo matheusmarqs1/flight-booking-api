@@ -94,9 +94,9 @@ public class TestConfig implements CommandLineRunner {
 		Seat s6 = new Seat(null, "1B", SeatClass.ECONOMY, f3);
 		seatRepository.saveAll(Arrays.asList(s1, s2, s3, s4, s5, s6));
 		
-		Ticket t1 = new Ticket(null, 500.0, TicketStatus.ISSUED, p1, r1, f1);
-		Ticket t2 = new Ticket(null, 500.0, TicketStatus.ISSUED, p3, r1, f1);
-		Ticket t3 = new Ticket(null, 479.85, TicketStatus.ISSUED, p1, r3, f3);
+		Ticket t1 = new Ticket(null, 500.0, TicketStatus.ISSUED, p1, r1, f1, s1);
+		Ticket t2 = new Ticket(null, 500.0, TicketStatus.ISSUED, p3, r1, f1, s2);
+		Ticket t3 = new Ticket(null, 479.85, TicketStatus.ISSUED, p1, r3, f3, s5);
 		
 		ticketRepository.saveAll(Arrays.asList(t1, t2, t3));
 		

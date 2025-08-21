@@ -3,6 +3,7 @@ package com.matheusmarqs1.flight_booking_api.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.matheusmarqs1.flight_booking_api.entities.enums.SeatClass;
 
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,9 +26,14 @@ public class Seat implements Serializable {
 	private String seatNumber;
 	private Integer seatClass;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "flight_id")
 	private Flight flight;
+	
+	@OneToOne(mappedBy = "seat")
+	@JsonIgnore
+	private Ticket ticket;
 	
 	public Seat() {
 	}
@@ -71,6 +78,14 @@ public class Seat implements Serializable {
 
 	public void setFlight(Flight flight) {
 		this.flight = flight;
+	}
+	
+	public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
 	}
 
 	@Override
