@@ -139,6 +139,10 @@ public class Flight implements Serializable {
 	public Set<Ticket> getTickets() {
 		return tickets;
 	}
+	
+	public int getAvailableSeats() {
+		return seats.size() - tickets.size();
+	}
 
 	@Override
 	public int hashCode() {

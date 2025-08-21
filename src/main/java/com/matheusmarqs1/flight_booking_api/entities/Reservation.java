@@ -109,6 +109,14 @@ public class Reservation implements Serializable {
 	public void setPayment(Payment payment) {
 		this.payment = payment;
 	}
+	
+	public double getTotal() {
+		double sum = 0.0;
+		for(Ticket ticket : tickets) {
+			sum += ticket.getPrice();
+		}
+		return sum;
+	}
 
 	@Override
 	public int hashCode() {
