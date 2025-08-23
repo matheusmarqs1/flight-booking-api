@@ -1,7 +1,6 @@
 package com.matheusmarqs1.flight_booking_api.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -13,6 +12,8 @@ import com.matheusmarqs1.flight_booking_api.dtos.passenger.PassengerResponse;
 import com.matheusmarqs1.flight_booking_api.dtos.passenger.PassengerUpdateRequest;
 import com.matheusmarqs1.flight_booking_api.entities.Passenger;
 import com.matheusmarqs1.flight_booking_api.repositories.PassengerRepository;
+import com.matheusmarqs1.flight_booking_api.services.exceptions.BusinessException;
+import com.matheusmarqs1.flight_booking_api.services.exceptions.ResourceNotFoundException;
 
 import jakarta.transaction.Transactional;
 
@@ -23,17 +24,26 @@ public class PassengerService {
 	private PassengerRepository passengerRepository;
 	
 	public List<PassengerResponse> findAll(){
-		List<Passenger> list = passengerRepository.findAll();
-		return list.stream().map(PassengerResponse::fromEntity).collect(Collectors.toList());
+		return passengerRepository.findAll().stream()
+				.map(PassengerResponse::fromEntity)
+				.collect(Collectors.toList());
 	}
 	
 	public PassengerResponse findById(UUID id) {
-		Optional<Passenger> obj =  passengerRepository.findById(id);
-		return PassengerResponse.fromEntity(obj.get());
+		Passenger passenger = getPassengerOrThrow(id);
+		return PassengerResponse.fromEntity(passenger);
 	}
 	
 	@Transactional
 	public PassengerResponse insert(PassengerCreateRequest obj) {
+		passengerRepository.findByCpf(obj.cpf()).ifPresent(passenger -> {
+			throw new BusinessException("CPF already registered");
+		});
+		
+		passengerRepository.findByEmail(obj.email()).ifPresent(passenger -> {
+			throw new BusinessException("Email already registered");
+		});
+		
 		Passenger passenger = new Passenger(
 				null, 
 				obj.name(), 
@@ -42,28 +52,43 @@ public class PassengerService {
 				obj.birthDate(), 
 				obj.phone()
 		);
-		Passenger createdPassenger = passengerRepository.save(passenger);
-		return PassengerResponse.fromEntity(createdPassenger);
+		return PassengerResponse.fromEntity(passengerRepository.save(passenger));
 	}
 	
 	@Transactional
 	public PassengerResponse update(UUID id, PassengerUpdateRequest obj) {
-		Passenger existingPassenger = passengerRepository.getReferenceById(id);
+		Passenger passenger = getPassengerOrThrow(id);
 		
-		existingPassenger.setName(obj.name());
-		existingPassenger.setEmail(obj.email());
-		existingPassenger.setCpf(obj.cpf());
-		existingPassenger.setBirthDate(obj.birthDate());
-		existingPassenger.setPhone(obj.phone());
+		passengerRepository.findByCpf(obj.cpf()).ifPresent(existingPassenger -> {
+			if(!existingPassenger.getId().equals(id)) {
+				throw new BusinessException("CPF already registered");
+			}
+		});
+		passengerRepository.findByEmail(obj.email()).ifPresent(existingPassenger -> {
+			if(!existingPassenger.getId().equals(id)) {
+				throw new BusinessException("Email already registered");
+			}
+		});
 		
-		Passenger updatedPassenger = passengerRepository.save(existingPassenger);
-		return PassengerResponse.fromEntity(updatedPassenger);
+		passenger.setName(obj.name());
+		passenger.setEmail(obj.email());
+		passenger.setCpf(obj.cpf());
+		passenger.setBirthDate(obj.birthDate());
+		passenger.setPhone(obj.phone());
 		
+		return PassengerResponse.fromEntity(passengerRepository.save(passenger));
 	}
 	
 	@Transactional
 	public void delete(UUID id) {
+		if(!passengerRepository.existsById(id)) {
+			throw new ResourceNotFoundException("Passenger not found with id " + id);
+		}
 		passengerRepository.deleteById(id);
 	}
 	
+	private Passenger getPassengerOrThrow(UUID id) {
+		return passengerRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Passenger not found with id " + id));
+	}
 }
