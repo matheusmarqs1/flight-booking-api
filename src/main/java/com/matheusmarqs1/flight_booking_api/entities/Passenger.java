@@ -7,9 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +25,17 @@ public class Passenger implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
+	@Column(nullable = false)
 	private String name;
+	@Column(nullable = false, unique = true)
 	private String email;
+	@Column(nullable = false, unique = true)
 	private String cpf;
+	@Column(nullable = false)
 	private LocalDate birthDate;
+	@Column(nullable = false)
 	private String phone;
 	
 	@JsonIgnore
@@ -42,7 +49,7 @@ public class Passenger implements Serializable {
 	public Passenger() {
 	}
 
-	public Passenger(Long id, String name, String email, String cpf, LocalDate birthDate, String phone) {
+	public Passenger(UUID id, String name, String email, String cpf, LocalDate birthDate, String phone) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -52,11 +59,11 @@ public class Passenger implements Serializable {
 		this.phone = phone;
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
